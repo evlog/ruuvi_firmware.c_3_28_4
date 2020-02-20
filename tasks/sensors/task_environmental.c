@@ -24,6 +24,9 @@
 #include <stdio.h>
 #include <string.h>
 
+
+
+
 #ifndef TASK_ENVIRONMENTAL_LOG_LEVEL
 #define TASK_ENVIRONMENTAL_LOG_LEVEL RUUVI_INTERFACE_LOG_INFO
 #endif
@@ -32,6 +35,7 @@
 #define LOGD(msg) ruuvi_interface_log(RUUVI_INTERFACE_LOG_DEBUG, msg)
 #define LOGW(msg) ruuvi_interface_log(RUUVI_INTERFACE_LOG_WARNING, msg)
 #define LOGHEX(msg, len) ruuvi_interface_log_hex(TASK_ENVIRONMENTAL_LOG_LEVEL, msg, len)
+
 
 static ruuvi_interface_timer_id_t m_log_timer;               //!< Timer for logging data
 
@@ -477,6 +481,7 @@ ruuvi_driver_status_t task_environmental_log(void)
                               .pressure_pa   = ruuvi_driver_sensor_data_parse(&data, (ruuvi_driver_sensor_data_fields_t){.datas.pressure_pa = 1})};
   ruuvi_library_status_t status = ruuvi_library_ringbuffer_queue(&ringbuf, &log, sizeof(log));
   // Drop old sample if buffer is full
+  //#vlog Ovewrite
   if(RUUVI_LIBRARY_ERROR_NO_MEM == status)
   {
     LOG("Discarded data... ");
@@ -601,6 +606,29 @@ ruuvi_driver_status_t task_environmental_log_read(const ruuvi_interface_communic
           ruuvi_interface_yield();
         }
       }
+       //#vlog_add my command
+      if(RUUVI_ENDPOINT_STANDARD_DESTINATION_ENVIRONMENTAL == destination ||
+         RUUVI_ENDPOINT_STANDARD_DESTINATION_MY_COMMAND      == destination)
+      {
+        //if(isnan( p_log->pressure_pa)) { continue; }
+        //uint32_t pressure_pa = p_log->pressure_pa;
+        msg.data[1] = RUUVI_ENDPOINT_STANDARD_DESTINATION_MY_COMMAND;
+        msg.data[7]  = 33;
+        msg.data[8]  = 33;
+        msg.data[9]  = 33;
+        msg.data[10] = 33;
+
+        status = ruuvi_library_ringbuffer_head_zero(&ringbuf);
+    
+        // Repeat sending here
+        while(RUUVI_LIBRARY_ERROR_NO_MEM == reply_fp(&msg))
+        {
+          // Sleep
+          ruuvi_interface_yield();
+        }
+      }
+
+
     }
   }while(RUUVI_LIBRARY_SUCCESS == status);
   LOG("Logs sent\r\n");
@@ -618,3 +646,4 @@ ruuvi_driver_status_t task_environmental_backend_set(const char* const name)
   }
   return RUUVI_DRIVER_ERROR_NOT_FOUND;
 }
+

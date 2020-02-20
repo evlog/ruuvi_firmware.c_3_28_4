@@ -14,7 +14,8 @@
  * Be sure to follow Apple guidelines on advertisement periods and connection parameters
  * for reliable operation with iOS devices.
  */
-#define APPLICATION_ADVERTISING_INTERVAL_MS              211
+//#vlog_add change update advertising interval to 10sec.
+#define APPLICATION_ADVERTISING_INTERVAL_MS              10000//211
 #define APPLICATION_CONNECTION_ADVERTISEMENT_INTERVAL_MS 211
 #define APPLICATION_ADVERTISEMENT_UPDATE_INTERVAL_MS     210
 #define APPLICATION_ADVERTISING_STARTUP_PERIOD_MS        1000

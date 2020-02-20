@@ -43,6 +43,7 @@ static ruuvi_driver_status_t task_communication_target_api_get(task_communicatio
     case RUUVI_ENDPOINT_STANDARD_DESTINATION_TEMPERATURE:
     case RUUVI_ENDPOINT_STANDARD_DESTINATION_HUMIDITY:
     case RUUVI_ENDPOINT_STANDARD_DESTINATION_PRESSURE:
+    case RUUVI_ENDPOINT_STANDARD_DESTINATION_MY_COMMAND: //#vlog_add
       task_environmental_api_get(api);
       break;
 

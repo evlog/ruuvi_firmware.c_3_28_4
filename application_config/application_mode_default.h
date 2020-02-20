@@ -199,8 +199,9 @@
  * 60 s interval -> 17 hours
  * 10 minute interval -> week
  */
+//#vlog_add change logging interval to 15min
 #ifndef APPLICATION_ENVIRONMENTAL_LOG_INTERVAL_MS
-#define APPLICATION_ENVIRONMENTAL_LOG_INTERVAL_MS (5*60*1000)
+#define APPLICATION_ENVIRONMENTAL_LOG_INTERVAL_MS (15*60*1000)
 #endif
 
 /**
@@ -229,7 +230,7 @@
 #endif
 
 #ifndef APPLICATION_ADVERTISING_INTERVAL_MS
-#define APPLICATION_ADVERTISING_INTERVAL_MS 1285
+#define APPLICATION_ADVERTISING_INTERVAL_MS 10000//1285
 #endif
 
 
